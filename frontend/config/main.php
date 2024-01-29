@@ -56,6 +56,8 @@ return [
         'class' => sizeg\jwt\JwtHttpBearerAuth::class,
         'optional' => [// 排除不需要验证
             'v1/jwt/login',
+            'gii/*',
+            'debug/*'
         ]
     ],
     'params' => $params,
