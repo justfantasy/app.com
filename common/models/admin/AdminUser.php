@@ -2,8 +2,10 @@
 
 namespace common\models\admin;
 
+use common\models\Model;
+use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 use yii\web\IdentityInterface;
 
 /**
@@ -13,10 +15,11 @@ use yii\web\IdentityInterface;
  * @property string $username 用户名
  * @property string $password 密码
  * @property string $real_name 姓名
+ * @property int $status 状态
  * @property int $created_at
  * @property int $updated_at
  */
-class AdminUser extends ActiveRecord implements IdentityInterface
+class AdminUser extends Model implements IdentityInterface
 {
     /**
      * 禁用状态
@@ -75,6 +78,20 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    /**
+     * 重构，去掉敏感字段
+     * @return array|false|int[]|string[]
+     */
+    public function fields()
+    {
+        $fields = parent::fields();
+        unset($fields['password']);
+        $fields['test'] = function (AdminUser $model) {
+            return $model->id . '===' . $model->real_name;
+        };
+        return $fields;
+    }
+
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
@@ -98,5 +115,16 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey): ?bool
     {
         return true;
+    }
+
+    /**
+     * 获取用户角色
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getRoles(): ActiveQuery
+    {
+        return $this->hasMany(AdminRole::class, ['id' => 'role_id'])
+            ->viaTable('admin_user_role', ['user_id' => 'id']);
     }
 }

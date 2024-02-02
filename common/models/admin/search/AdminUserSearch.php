@@ -1,0 +1,50 @@
+<?php
+
+namespace common\models\admin\search;
+
+use yii\data\ActiveDataProvider;
+use common\models\admin\AdminUser;
+
+/**
+ * AdminUserSearch represents the model behind the search form of `common\models\admin\AdminUser`.
+ */
+class AdminUserSearch extends AdminUser
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+            [['id'], 'integer'],
+            [['real_name'], 'safe'],
+        ];
+    }
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search(array $params): ActiveDataProvider
+    {
+        $query = self::find()->with('roles');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere(['id' => $this->id]);
+        $query->andFilterWhere(['like', 'real_name', $this->real_name]);
+
+        return $dataProvider;
+    }
+}

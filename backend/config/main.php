@@ -1,5 +1,7 @@
 <?php
 
+use yii\web\Response;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -12,13 +14,17 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'system' => [
+            'class' => 'backend\modules\system\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
         'response' => [
-            'format' => 'json',
+            'format' => Response::FORMAT_JSON,
         ],
         'user' => [
             'identityClass' => 'common\models\admin\AdminUser',
@@ -26,7 +32,7 @@ return [
         ],
         'jwt' => [
             'class' => sizeg\jwt\Jwt::class,
-            'key' => 'WstOpBBatR23A$s#ya%snYTEdB',
+            'key' => 'WstOpBBatR23A$s#ya%snYTEdB', // 请在main-local中重载该配置
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend

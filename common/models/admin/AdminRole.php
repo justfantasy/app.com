@@ -54,4 +54,13 @@ class AdminRole extends ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields['test'] = function (AdminRole $model) {
+            return $model->id . '|||' . $model->name;
+        };
+        return $fields;
+    }
 }
