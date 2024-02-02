@@ -4,7 +4,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
+            'dsn' => 'mysql:host=localhost;dbname=app',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',
@@ -24,7 +24,7 @@ return [
                     'except' => [
                         'yii\web\HttpException:4*',
                     ],
-                    'robotKey' => '735b501f-0614-411a-a01e-b58af4cd0af7',
+                    'robotKey' => '',
                 ],
             ],
         ],
