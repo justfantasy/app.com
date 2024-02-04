@@ -18,9 +18,35 @@ use yii\web\NotFoundHttpException;
 /**
  * AdminUserController implements the CRUD actions for AdminUser model.
  */
-class AdminUserController extends Controller
+class AdminUserController extends ActiveController
 {
     public $modelClass = AdminUser::class;
+
+    public function actions(): array
+    {
+        return [
+            'index' => [
+                'class' => 'backend\actions\IndexAction',
+                'modelClass' => AdminUserSearch::class,
+            ],
+            'view' => [
+                'class' => 'yii\rest\ViewAction',
+                'modelClass' => $this->modelClass,
+            ],
+            'create' => [
+                'class' => 'yii\rest\CreateAction',
+                'modelClass' => $this->modelClass,
+            ],
+            'update' => [
+                'class' => 'yii\rest\UpdateAction',
+                'modelClass' => $this->modelClass,
+            ],
+            'delete' => [
+                'class' => 'yii\rest\DeleteAction',
+                'modelClass' => $this->modelClass,
+            ],
+        ];
+    }
 //    /**
 //     * @var AdminUser
 //     */
@@ -29,17 +55,17 @@ class AdminUserController extends Controller
 //    /**
 //     * Lists all AdminUser models.
 //     */
-    public function actionIndex()
-    {
-        $searchModel = new AdminUserSearch();
-        $x = $searchModel->search($this->request->queryParams);
-        return $x->getModels();
-    }
+//    public function actionIndex()
+//    {
+//        $searchModel = new AdminUserSearch();
+//        $x = $searchModel->search($this->request->queryParams);
+//        return $x->getModels();
+//    }
 
-    public function actionView($id)
-    {
-        return AdminUser::find()->with('roles')->one();
-    }
+//    public function actionView($id)
+//    {
+//        return AdminUser::find()->with('roles')->one();
+//    }
 //
 //    /**
 //     * Displays a single AdminUser model.

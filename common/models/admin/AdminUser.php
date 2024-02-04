@@ -2,6 +2,7 @@
 
 namespace common\models\admin;
 
+use Yii;
 use common\models\Model;
 use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
@@ -38,7 +39,7 @@ class AdminUser extends Model implements IdentityInterface
     public function behaviors(): array
     {
         return [
-            TimestampBehavior::class
+            TimestampBehavior::class,
         ];
     }
 
@@ -56,10 +57,11 @@ class AdminUser extends Model implements IdentityInterface
     public function rules(): array
     {
         return [
-            [['username', 'password', 'real_name', 'created_at', 'updated_at'], 'required'],
+            [['username', 'password', 'real_name'], 'required'],
             [['created_at', 'updated_at'], 'integer'],
             [['username', 'real_name'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 64],
+            [['username'], 'unique']
         ];
     }
 
@@ -86,9 +88,6 @@ class AdminUser extends Model implements IdentityInterface
     {
         $fields = parent::fields();
         unset($fields['password']);
-        $fields['test'] = function (AdminUser $model) {
-            return $model->id . '===' . $model->real_name;
-        };
         return $fields;
     }
 

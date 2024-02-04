@@ -2,13 +2,14 @@
 
 namespace common\models\admin\search;
 
+use common\interfaces\SearchModelInterface;
 use yii\data\ActiveDataProvider;
 use common\models\admin\AdminUser;
 
 /**
  * AdminUserSearch represents the model behind the search form of `common\models\admin\AdminUser`.
  */
-class AdminUserSearch extends AdminUser
+class AdminUserSearch extends AdminUser implements SearchModelInterface
 {
     /**
      * {@inheritdoc}
